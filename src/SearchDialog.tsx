@@ -136,55 +136,62 @@ const SearchDialog = ({ searchInfo, onClose }: Props) => {
   const start = performance.now();
   const filteredLectures = useMemo(() => {
     const { query = "", credits, grades, days, times, majors } = searchOptions;
-    return lectures
-      .filter(
-        (lecture) =>
-          lecture.title.toLowerCase().includes(query.toLowerCase()) ||
-          lecture.id.toLowerCase().includes(query.toLowerCase())
-      )
-      .filter(
-        (lecture) => grades.length === 0 || grades.includes(lecture.grade)
-      )
-      .filter(
-        (lecture) => majors.length === 0 || majors.includes(lecture.major)
-      )
-      .filter(
-        (lecture) => !credits || lecture.credits.startsWith(String(credits))
-      )
-      .filter((lecture) => {
-        if (days.length === 0) {
-          return true;
-        }
-        const schedules = lecture.schedule
-          ? parseSchedule(lecture.schedule)
-          : [];
-        return schedules.some((s) => days.includes(s.day));
-      })
-      .filter((lecture) => {
-        if (times.length === 0) {
-          return true;
-        }
-        const schedules = lecture.schedule
-          ? parseSchedule(lecture.schedule)
-          : [];
-        return schedules.some((s) =>
+
+    return lectures.filter((lecture) => {
+     
+      //1. query 필터
+      if(query) {
+        const queryLower = query.toLowerCase()
+        const matchQuery = lecture.title.toLowerCase().includes(queryLower) || lecture.id.toLowerCase().includes(queryLower)
+        if (!matchQuery) return false
+      }
+
+      //2. grades 필터
+      if(grades.length >0 && !grades.includes(lecture.grade)){
+        return false
+      }
+
+      //3. majors 필터
+      if(majors.length >0 && !majors.includes(lecture.major)){
+        return false
+      }
+
+      //4. credits 필터
+      if(credits && !lecture.credits.startsWith(String(credits))){
+        return false
+      }
+
+      // 5 & 6. Days와 Times 필터 (요일과 시간) - parseSchedule 한 번만 호출!
+    if (days.length > 0 || times.length > 0) {
+      const schedules = lecture.schedule ? parseSchedule(lecture.schedule) : [];
+
+      // Days 체크
+      if (days.length > 0) {
+        const matchesDay = schedules.some((s) => days.includes(s.day));
+        if (!matchesDay) return false;
+      }
+      
+      // Times 체크 (같은 schedules 재사용!)
+      if (times.length > 0) {
+        const matchesTime = schedules.some((s) => 
           s.range.some((time) => times.includes(time))
         );
-      });
-  }, [lectures, searchOptions]);
-  console.log(
-    "필터링 완료 시간: ",
-    performance.now(),
-    "걸린 시간(ms): ",
-    performance.now() - start
-  );
+        if (!matchesTime) return false;
+      }
+    }
+    return true
+    
+  })
+},[lectures, searchOptions])
+console.log("필터링 완료 시간: ",performance.now(), "걸린 시간(ms): ", performance.now() - start);
+ 
   const lastPage = Math.ceil(filteredLectures.length / PAGE_SIZE);
   const visibleLectures = filteredLectures.slice(0, page * PAGE_SIZE);
-  const allMajors = [...new Set(lectures.map(lecture => lecture.major))];
+  const allMajors = useMemo(() => [...new Set(lectures.map(lecture => lecture.major))], [lectures]);
 
   const changeSearchOption = (field: keyof SearchOption, value: SearchOption[typeof field]) => {
     setPage(1);
-    setSearchOptions(({ ...searchOptions, [field]: value }));
+    setSearchOptions({ ...searchOptions, [field]: value });
     loaderWrapperRef.current?.scrollTo(0, 0);
   };
 

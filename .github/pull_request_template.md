@@ -4,9 +4,9 @@
 
 - [x] 배포 후 url 제출
 
-- [ ] API 호출 최적화(`Promise.all` 이해)
+- [x] API 호출 최적화(`Promise.all` 이해)
 
-- [ ] SearchDialog 불필요한 연산 최적화
+- [x] SearchDialog 불필요한 연산 최적화
 - [ ] SearchDialog 불필요한 리렌더링 최적화
 
 - [ ] 시간표 블록 드래그시 렌더링 최적화
