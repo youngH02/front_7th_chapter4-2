@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import {
   Box,
   Button,
@@ -34,6 +34,7 @@ import { Lecture } from "./types.ts";
 import { parseSchedule } from "./utils.ts";
 import axios from "axios";
 import { DAY_LABELS } from "./constants.ts";
+import { useAutoCallback } from "./useAutoCallback.ts";
 
 interface Props {
   searchInfo: {
@@ -187,7 +188,7 @@ const SearchDialog = ({ searchInfo, onClose }: Props) => {
     loaderWrapperRef.current?.scrollTo(0, 0);
   };
 
-  const addSchedule = useCallback(
+  const addSchedule = useAutoCallback(
     (lecture: Lecture) => {
       if (!searchInfo) return;
 
@@ -204,9 +205,7 @@ const SearchDialog = ({ searchInfo, onClose }: Props) => {
       }));
 
       onClose();
-    },
-    [onClose, searchInfo, setSchedulesMap]
-  );
+    });
 
   useEffect(() => {
     const start = performance.now();
