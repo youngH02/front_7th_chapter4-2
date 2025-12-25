@@ -2,14 +2,11 @@
 
 ## 과제 요구사항
 
-- [x] 배포 후 url 제출
-
-- [x] API 호출 최적화(`Promise.all` 이해)
-
-- [x] SearchDialog 불필요한 연산 최적화
+- [X] 배포 후 url 제출
+- [X] API 호출 최적화(`Promise.all` 이해)
+- [X] SearchDialog 불필요한 연산 최적화
 - [ ] SearchDialog 불필요한 리렌더링 최적화
-
-- [ ] 시간표 블록 드래그시 렌더링 최적화
+- [X] 시간표 블록 드래그시 렌더링 최적화
 - [ ] 시간표 블록 드롭시 렌더링 최적화
 
 ## 과제 셀프회고
@@ -19,6 +16,7 @@ https://youngh02.github.io/front_7th_chapter4-2/
 <!-- 과제에 대한 회고를 작성해주세요 -->
 
 ### 기술적 성장
+
 <!-- 예시
 - 새로 학습한 개념
 - 기존 지식의 재발견/심화
@@ -26,6 +24,7 @@ https://youngh02.github.io/front_7th_chapter4-2/
 -->
 
 ### 코드 품질
+
 <!-- 예시
 - 특히 만족스러운 구현
 - 리팩토링이 필요한 부분
@@ -33,6 +32,7 @@ https://youngh02.github.io/front_7th_chapter4-2/
 -->
 
 ### 학습 효과 분석
+
 <!-- 예시
 - 가장 큰 배움이 있었던 부분
 - 추가 학습이 필요한 영역
@@ -40,6 +40,7 @@ https://youngh02.github.io/front_7th_chapter4-2/
 -->
 
 ### 과제 피드백
+
 <!-- 예시
 - 과제에서 모호하거나 애매했던 부분
 - 과제에서 좋았던 부분
