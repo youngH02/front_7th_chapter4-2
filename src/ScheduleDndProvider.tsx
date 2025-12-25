@@ -52,7 +52,14 @@ const ActiveTableContext = createContext<string | null>(null);
 
 export const useActiveTableId = () => useContext(ActiveTableContext);
 
-export default function ScheduleDndProvider({ children }: PropsWithChildren) {
+interface ProviderProps extends PropsWithChildren {
+  tableId?: string;
+}
+
+export default function ScheduleDndProvider({
+  children,
+  tableId,
+}: ProviderProps) {
   const { setSchedulesMap } = useScheduleContext();
   const [activeTableId, setActiveTableId] = useState<string | null>(null);
   const sensors = useSensors(
@@ -65,6 +72,11 @@ export default function ScheduleDndProvider({ children }: PropsWithChildren) {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDragStart = (event: any) => {
+    if (tableId) {
+      setActiveTableId(tableId);
+      return;
+    }
+
     const activeId = event.active?.id;
     if (activeId) {
       setActiveTableId(String(activeId).split(":")[0]);
