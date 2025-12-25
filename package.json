@@ -22,7 +22,8 @@
     "framer-motion": "latest",
     "msw": "latest",
     "react": "latest",
-    "react-dom": "latest"
+    "react-dom": "latest",
+    "react-window": "^2.2.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.9.1",
@@ -31,6 +32,7 @@
     "@types/express": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
+    "@types/react-window": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "@vitejs/plugin-react-swc": "^3.11.0",
