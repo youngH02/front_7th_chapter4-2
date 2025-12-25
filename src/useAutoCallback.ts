@@ -1,6 +1,6 @@
 import { useCallback, useRef } from "react";
 
-export const useAutoCallback = <T extends (...args: unknown[]) => unknown>(
+export const useAutoCallback = <T extends (...args: any[]) => any>(
   originCallback: T
 ) => {
   const ref = useRef(originCallback);

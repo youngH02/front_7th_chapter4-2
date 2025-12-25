@@ -133,11 +133,11 @@ const SearchDialog = ({ searchInfo, onClose }: Props) => {
     majors: [],
   });
 
-  const start = performance.now();
   const filteredLectures = useMemo(() => {
+    const start = performance.now(); 
     const { query = "", credits, grades, days, times, majors } = searchOptions;
 
-    return lectures.filter((lecture) => {
+    const result = lectures.filter((lecture) => {
      
       //1. query 필터
       if(query) {
@@ -182,18 +182,20 @@ const SearchDialog = ({ searchInfo, onClose }: Props) => {
     return true
     
   })
-},[lectures, searchOptions])
-console.log("필터링 완료 시간: ",performance.now(), "걸린 시간(ms): ", performance.now() - start);
+  
+  console.log("필터링 완료 시간:", performance.now(), "걸린 시간(ms):", (performance.now() - start).toFixed(2)); // ← useMemo 안으로!
+  return result;
+}, [lectures, searchOptions]);
  
   const lastPage = Math.ceil(filteredLectures.length / PAGE_SIZE);
-  const visibleLectures = filteredLectures.slice(0, page * PAGE_SIZE);
+  const visibleLectures = useMemo(() => filteredLectures.slice(0, page * PAGE_SIZE), [filteredLectures, page]);
   const allMajors = useMemo(() => [...new Set(lectures.map(lecture => lecture.major))], [lectures]);
 
-  const changeSearchOption = (field: keyof SearchOption, value: SearchOption[typeof field]) => {
+  const changeSearchOption = useAutoCallback((field: keyof SearchOption, value: SearchOption[typeof field]) => {
     setPage(1);
-    setSearchOptions({ ...searchOptions, [field]: value });
+    setSearchOptions(prev => ({ ...prev, [field]: value }));
     loaderWrapperRef.current?.scrollTo(0, 0);
-  };
+  });
 
   const addSchedule = useAutoCallback(
     (lecture: Lecture) => {
@@ -255,6 +257,8 @@ console.log("필터링 완료 시간: ",performance.now(), "걸린 시간(ms): "
     }))
     setPage(1);
   }, [searchInfo]);
+
+
 
   return (
     <Modal isOpen={Boolean(searchInfo)} onClose={onClose} size="6xl">
