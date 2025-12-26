@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react-swc';
 
 export default mergeConfig(
   defineConfig({
+    base: '/front_7th_chapter4-2/', 
     plugins: [react()],
   }),
   defineTestConfig({
